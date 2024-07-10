@@ -87,7 +87,12 @@
                 success: function(response) {
                     if(response.status === 'success') {
                         toastr.success(response.message, 'OTP verified successfully');
-                        window.location.href = response.route;
+
+                        // redirect to dashboard after 2 seconds
+                        window.setTimeout(function() {
+                            window.location.href = response.route;
+                        }, 2000);
+
                     } else {
                         $("#otp_btn").val('Submit');
                         toastr.error(response.message, 'OTP Verification Error');

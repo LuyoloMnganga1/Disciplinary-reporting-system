@@ -62,11 +62,11 @@
                     if(response.status === 'success') {
                         $("#submit_btn").val('Submit');
                         toastr.success(response.message, 'Password has been updated successfully');
-                        
-                        // redirect to loggin after 5 seconds
+
+                        // redirect to login after 2 seconds
                         window.setTimeout(function() {
                             window.location.href = response.route;
-                        }, 5000);
+                        }, 2000);
 
                     } else {
                         $("#submit_btn").val('Submit');
