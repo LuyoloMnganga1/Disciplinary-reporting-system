@@ -10,7 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
-        "mckenziearts/laravel-notify": "^2.5"
+        "league/oauth2-client": "^2.7",
+        "microsoft/microsoft-graph": "^1.85"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
