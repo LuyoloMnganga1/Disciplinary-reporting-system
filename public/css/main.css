@@ -1,0 +1,73 @@
+
+
+/* DASHBOARD SMALL DIV WITH HEADINGS */
+.flex-container{
+    display: flex;
+    justify-content:flex-start;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.flex-container div{
+    vertical-align: middle;
+    text-align: center;
+}
+
+.flex-container div span{
+    font-size: 0.9rem !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #000 !important;
+}
+
+
+/* DASHBOARD SMALL DIV WITH HEADINGS */
+
+/* DASHBOARD DETAIL CARD */
+.dashboard-detail-card{
+    background-color: gray !important ;
+    color: #000;
+    line-height: 1.8rem !important;
+}
+
+.dashboard-detail-card span{
+    font-size:0.85rem !important;
+}
+
+.dashboard-detail-card  span.badge{
+    background-color: #fff !important ;
+    color: #000;
+    font-size: 0.8rem !important;
+}
+
+.dashboard-detail-card i, .filters i{
+    background-color: rgba(255, 255, 255, 0.7);
+    color: gray;
+    font-size: 1rem !important;
+    border-radius: 50%;
+    padding: 0.6rem;
+    width: 35px !important;
+    height: 35px !important;
+    margin-right: 0.5rem;
+}
+
+.filters{
+    background-color: gray !important;
+}
+
+.filters .btn{
+    font-size: 1rem;
+}
+
+.filters select{
+    font-size: 0.85rem !important;
+    background-color: rgba(255,255,255,1);
+    color: #000 !important;
+    font-weight: bold;
+    border: none;
+    outline: none;
+}
+
+/* DASHBOARD DETAIL CARD */
