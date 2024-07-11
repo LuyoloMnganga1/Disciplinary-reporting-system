@@ -94,4 +94,10 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
     @yield('scripts')
+    <div class="footer py-0 mt-3" style="width:100%;">
+        <div class="footer-copyright text-center p-1 bg-dark text-white"
+            style="border-top:3px solid gray; border-bottom:3px solid gray; font-size:0.75rem;"> &copy; {{ now()->year }}
+            <span class="text-white">Disciplinary Report System by <a href="https://ictchoice.com/" target="_blank" style="text-decoration: none;color: gold">SMS ICT Choice Pty (Ltd)</a></span>
+        </div>
+    </div>
 </html>
