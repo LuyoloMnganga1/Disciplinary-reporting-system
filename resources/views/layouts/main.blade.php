@@ -9,6 +9,9 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="{{asset('css/main.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.bootstrap5.css">
   </head>
   <style>
     .navbar-custom {
@@ -22,19 +25,22 @@
     }
     .navbar-custom .navbar-nav .nav-link.active {
         background-color: white;
-        color: black;
+        color: black !important;
         border-radius: 10px;
     }
     .dropdown-menu {
             z-index: 1051; /* Higher than the default navbar z-index */
         }
+    body{
+        background-color: #f5f5f5 !important;
+    }
 </style>
   <body>
       <!-- Top Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light p-1">
         <div class="container-fluid">
             <!-- Logo -->
-            <a class="navbar-brand pl-3" href="#">
+            <a class="navbar-brand pl-3" href="{{route('dashboard')}}">
                 <img src="{{asset('Images/logo.png')}}" alt="" width="80px" height="80px">
             </a>
             <!-- System Menu -->
@@ -63,7 +69,7 @@
             <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('dashboard') ? 'active' : ''}}" href="#"><i class="fa fa-home {{ request()->is('dashboard') ? 'text-dark' : 'text-light'}}"></i> Dashboard</a>
+                        <a class="nav-link {{ request()->is('dashboard') ? 'active' : ''}} {{ request()->is('dashboard') ? 'text-dark' : 'text-light'}}" href="{{route('dashboard')}}"><i class="fa fa-home {{ request()->is('dashboard') ? 'text-dark' : 'text-light'}}"></i> Dashboard</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">Disciplinaries</a>
@@ -81,7 +87,7 @@
                         <a class="nav-link text-light" href="#">Utilities</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">Audit Trails</a>
+                        <a class="nav-link text-light {{ request()->is('audit') ? 'active' : ''}}" href="{{route('audit')}}">Audit Trails</a>
                     </li>
                 </ul>
             </div>
@@ -91,13 +97,42 @@
         @yield('content')
     </div>
   </body>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/dataTables.fixedColumns.js"></script>
+    <script src="https://cdn.datatables.net/fixedcolumns/5.0.1/js/fixedColumns.bootstrap5.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+<script>
+    @if (Session::has('message'))
+        var type = "{{ Session::get('alert-type', 'info') }}"
+        switch (type) {
+            case 'info':
+
+                toastr.info("{{ Session::get('message') }}");
+                break;
+            case 'success':
+
+                toastr.success("{{ Session::get('message') }}");
+                break;
+            case 'warning':
+
+                toastr.warning("{{ Session::get('message') }}");
+                break;
+            case 'error':
+
+                toastr.error("{{ Session::get('message') }}");
+                break;
+        }
+    @endif
+</script>
     @yield('scripts')
     <div class="footer py-0 mt-3" style="width:100%;">
         <div class="footer-copyright text-center p-1 bg-dark text-white"
             style="border-top:3px solid gray; border-bottom:3px solid gray; font-size:0.75rem;"> &copy; {{ now()->year }}
-            <span class="text-white">Disciplinary Report System by <a href="https://ictchoice.com/" target="_blank" style="text-decoration: none;color: gold">SMS ICT Choice Pty (Ltd)</a></span>
+            <span class="text-white">Disciplinary Report System. Designed by <a href="https://ictchoice.com/" target="_blank" style="text-decoration: none;color: gold">SMS ICT Choice Pty (Ltd)</a></span>
         </div>
     </div>
 </html>
