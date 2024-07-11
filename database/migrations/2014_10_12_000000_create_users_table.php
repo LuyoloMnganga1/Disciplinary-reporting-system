@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
+            $table->string('role')->nullable();
             $table->string('one_time_pin')->nullable();
             $table->string('one_time_pin_time')->nullable();
             $table->string('user_one_time_pin')->nullable();

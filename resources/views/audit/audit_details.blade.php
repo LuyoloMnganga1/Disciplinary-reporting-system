@@ -7,16 +7,8 @@
     </div>
    @foreach ($audit as $item)
    <div class="row card card-rounded shadow-regular my-2 mx-1 py-3 px-1">
-    <div class="card-header bg bg-success">
+    <div class="card-header bg bg-dark">
        <h4 class="text-light text-bold"> Audit Information</h4>
-    </div>
-    <div class="col-lg-12">
-        @if (session('message'))
-        <div class="alert alert-success  mt-2">
-            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <strong>{{session('message')}}</strong>
-        </div>
-        @endif
     </div>
         <div class="row">
             @php

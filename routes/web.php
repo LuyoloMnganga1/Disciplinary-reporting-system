@@ -6,6 +6,7 @@ use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\AuditController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,9 +54,19 @@ Route::group(['middleware' => ['auth']], function(){
      //*******************************AUDIT ROUTES *********************************//
      Route::get('/audit',[AuditController::class, 'index'])->name('audit');
 
-     Route::get('view_audit/{id}', [AuditController::class, 'audit_details'])->name('view_audit');
+     Route::get('view_audit/{id}', [AuditController::class, 'auditDetails'])->name('view_audit');
 
-     Route::get('get_audits', [AuditController::class, 'getaudits'])->name('get_audits');
+     Route::get('get_audits', [AuditController::class, 'getAudits'])->name('get_audits');
      //*******************************END OF AUDIT ROUTES *********************************//
+
+    //*******************************USERS ROUTES *********************************//
+    Route::get('/users',[UserController::class, 'index'])->name('users');
+
+    Route::get('/get_users', [UserController::class, 'getUsers'])->name('get_users');
+
+    Route::get('/user/edit/{id}', [UserController::class, 'editUser']);
+    
+    Route::post('/user/update/{id}', [UserController::class, 'updateUser'])->name('update-user');
+     //*******************************END OF USERS ROUTES *********************************//
 });
 //*********************************** END OF BACK-END ROUTES *************************************************//

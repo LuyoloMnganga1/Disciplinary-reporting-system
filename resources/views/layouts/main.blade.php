@@ -12,29 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/5.0.1/css/fixedColumns.bootstrap5.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
   </head>
-  <style>
-    .navbar-custom {
-        background-color: black;
-        color: white;
-        border-top:5px solid gray;
-        border-bottom:5px solid gray;
-    }
-    .navbar-custom .navbar-nav .nav-link {
-       padding: 0px 20px 0px 20px;
-    }
-    .navbar-custom .navbar-nav .nav-link.active {
-        background-color: white;
-        color: black !important;
-        border-radius: 10px;
-    }
-    .dropdown-menu {
-            z-index: 1051; /* Higher than the default navbar z-index */
-        }
-    body{
-        background-color: #f5f5f5 !important;
-    }
-</style>
   <body>
       <!-- Top Navbar -->
       <nav class="navbar navbar-expand-lg navbar-light bg-light p-1">
@@ -81,7 +60,7 @@
                         <a class="nav-link text-light" href="#">Employees</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">User Management</a>
+                        <a class="nav-link text-light {{ request()->is('users') ? 'active' : ''}}" href="{{route('users')}}">User Management</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">Utilities</a>

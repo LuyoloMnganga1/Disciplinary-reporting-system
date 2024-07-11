@@ -18,12 +18,14 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Luyolo Mnganga',
             'email' => 'luyolo.mnganga@ictchoice.co.za',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'role' => 'Super Admin',
         ]);
         User::create([
             'name' => 'Ayabonga Maqashu',
             'email' => 'ayabonga.maqashu@ictchoice.co.za',
-            'password' => Hash::make('password')
+            'password' => Hash::make('password'),
+            'role' => 'Super Admin',
         ]);
     }
 }

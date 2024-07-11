@@ -20,7 +20,7 @@ class AuditController extends Controller
         return $values;
     }
 
-    public function getaudits(Request $request)
+    public function getAudits(Request $request)
     {
 
         if ($request->ajax()) {
@@ -117,7 +117,7 @@ class AuditController extends Controller
         );
         return redirect()->back()->with($notification);
     }
-    public function audit_details($id){
+    public function auditDetails($id){
         $audit = DB::table('audits')->where('id',$id)->get();
         return view('audit.audit_details')->with('audit',$audit);
     }
