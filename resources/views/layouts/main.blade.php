@@ -64,7 +64,10 @@
                     </li>
                     @endif
                     <li class="nav-item">
-                        <a class="nav-link text-light" href="#">Utilities</a>
+                        <a class="nav-link text-light" href="#">Reports</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-light {{ request()->is('utilities') ? 'active' : ''}}" href="{{route('utilities')}}">Utilities</a>
                     </li>
                     @if (Auth::user()->role == 'Super Admin')
                     <li class="nav-item">

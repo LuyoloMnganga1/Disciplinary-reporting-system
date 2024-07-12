@@ -1,5 +1,8 @@
 
-
+*{
+    padding-left: 7px !important;
+    padding-right: 7px !important;
+}
 /* DASHBOARD SMALL DIV WITH HEADINGS */
 .flex-container{
     display: flex;

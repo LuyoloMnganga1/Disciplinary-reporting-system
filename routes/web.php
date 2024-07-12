@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ResetPasswordController;
 use App\Http\Controllers\AuditController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UtilitiesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,6 +65,7 @@ Route::group(['middleware' => ['auth']], function(){
      //*******************************END OF AUDIT ROUTES *********************************//
 
     //*******************************USERS ROUTES *********************************//
+
     Route::get('/users',[UserController::class, 'index'])->name('users');
 
     Route::get('/get_users', [UserController::class, 'getUsers'])->name('get_users');
@@ -75,6 +77,14 @@ Route::group(['middleware' => ['auth']], function(){
     Route::post('/user/delete', [UserController::class, 'deleteUser'])->name('delete-user');
 
     Route::post('/user/add', [UserController::class, 'addUser'])->name('add-user');
+
      //*******************************END OF USERS ROUTES *********************************//
+
+     //***************************UTILITIES ROUTES **************************************//
+
+     Route::get('/utilities',[UtilitiesController::class, 'index'])->name('utilities');
+
+     //***************************END OF UTILITIES ROUTES **************************************//
+
 });
 //*********************************** END OF BACK-END ROUTES *************************************************//
