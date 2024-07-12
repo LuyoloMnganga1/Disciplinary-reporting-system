@@ -1,12 +1,17 @@
 @extends('layouts.main')
 @section('content')
+<style>
+    label{
+        font-weight: bold;
+    }
+</style>
 <!-- Container fluid -->
 <div class="container-fluid col-lg-12">
     <div class="col-lg-12">
         <a href="{{route('audit')}}"  class="btn btn-sm btn-secondary mt-1 mb-1"><i class="fa fa-arrow-circle-left"></i>&nbsp;&nbsp;Back</a>
     </div>
    @foreach ($audit as $item)
-   <div class="row card card-rounded shadow-regular my-2 mx-1 py-3 px-1">
+   <div class="row card card-rounded shadow-regular my-2 mx-1">
     <div class="card-header bg bg-dark">
        <h4 class="text-light text-bold"> Audit Information</h4>
     </div>
