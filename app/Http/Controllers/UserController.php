@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use App\Models\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -64,6 +66,43 @@ class UserController extends Controller
         }
     }
 
+    public function addUser(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users'],
+            'role' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            $notification = array(
+                'message' => 'All fields are required. Also the email must be unique from all users',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+        }
+        try{
+            User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => $request->role,
+            ]);
+            $notification = array(
+                'message' => 'User added successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
+        }catch(\Exception $e){
+             // Log error or handle appropriately
+             \Log::error('Failed to add user: ' . $e->getMessage());
+             $notification = array(
+                'message' => 'Failed to add user:'. $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+              // Failed to update
+        }
+    }
     public function editUser($id)
     {
         $user = User::find($id);
@@ -75,16 +114,62 @@ class UserController extends Controller
             'role'=>$user->role,
         ]);
     }
-    public function updateUser(Request $request,$id)
+    public function updateUser(Request $request)
     {
-        $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->role = $request->role;
-        $user->save();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User Updated Successfully',
+        try {
+            $user = User::findOrFail($request->user_id);
+            User::whereId($user->id)->update([
+                'name' => $request->name,
+                'email' => $request->email,
+                'role' => $request->role,
             ]);
+            return response()->json([
+                'status' => 'success',
+                'message' => 'User Updated Successfully',
+            ]);
+        } catch (ModelNotFoundException $e) {
+            // Handle the case where the user is not found
+            \Log::error('User not found: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'User not found',
+            ]);
+        } catch (\Exception $e) {
+            // Log error or handle appropriately
+            \Log::error('Failed to update user: ' . $e->getMessage());
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update user: ' . $e->getMessage(),
+            ]); // Failed to update
+        }
     }
+    public function deleteUser(Request $request)
+    {
+        try {
+            $user = User::findOrFail($request->user_id);
+            $user->delete();
+            $notification = array(
+                'message' => 'User Deleted Successfully',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
+        } catch (ModelNotFoundException $e) {
+            // Handle the case where the user is not found
+            \Log::error('User not found: ' . $e->getMessage());
+            $notification = array(
+                'message' => 'User not found',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+        } catch (\Exception $e) {
+            // Log error or handle appropriately
+            \Log::error('Failed to delete user: ' . $e->getMessage());
+            $notification = array(
+                'message' => 'Failed to delete user: ' . $e->getMessage(),
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+        }
+    }
+
 }

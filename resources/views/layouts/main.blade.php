@@ -59,15 +59,19 @@
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">Employees</a>
                     </li>
+                    @if (Auth::user()->role == 'Super Admin')
                     <li class="nav-item">
                         <a class="nav-link text-light {{ request()->is('users') ? 'active' : ''}}" href="{{route('users')}}">User Management</a>
                     </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link text-light" href="#">Utilities</a>
                     </li>
+                    @if (Auth::user()->role == 'Super Admin')
                     <li class="nav-item">
                         <a class="nav-link text-light {{ request()->is('audit') ? 'active' : ''}}" href="{{route('audit')}}">Audit Trails</a>
                     </li>
+                    @endif
                 </ul>
             </div>
         </div>

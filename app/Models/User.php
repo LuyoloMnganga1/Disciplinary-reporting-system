@@ -26,6 +26,7 @@ class User extends Authenticatable implements Auditable
         'one_time_pin',
         'one_time_pin_time',
         'user_one_time_pin',
+        'role', 
     ];
 
     /**

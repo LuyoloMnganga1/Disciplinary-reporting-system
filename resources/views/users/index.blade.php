@@ -4,7 +4,7 @@
 <div class="container-fluid col-lg-12">
     <div class="row card card-rounded shadow-regular my-2 mx-1 py-3 px-1">
         <div class="col-lg-12">
-            <a href="#" class="btn btn-sm btn-outline-secondary mt-1 mb-1 bg bg-dark text-light"><i class="fa fa-plus"></i>&nbsp;&nbsp; Add User</a>
+            <button type="button" class="btn btn-sm btn-dark" data-bs-toggle="modal" data-bs-target="#add_model"><i class="fa fa-plus"></i>&nbsp;&nbsp; Add User</button>
         </div>
         <div class="col-lg-12">
             <table class="table table-striped table-sm border data-table" id="table">
@@ -24,19 +24,57 @@
         </div>
     </div>
 </div>
-
+<!-- Add Modal -->
+<div class="modal fade" id="add_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{route("add-user")}}" method="POST" enctype="multipart/form-data" id="update-user-form">
+            @csrf
+        <div class="modal-header bg bg-dark">
+          <h5 class="modal-title text-light" id="exampleModalLabel">Add User</h5>
+          <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="user_id" id="user_id">
+          <div class="form-group">
+            <label for="name" class="">Full Name</label>
+            <input type="text" class="form-control" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="name" class="">Email</label>
+            <input type="email" class="form-control" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="name" class="">Role</label>
+            <select name="role" id="role" class="form-control" required>
+                <option value="">Select role</option>
+                <option value="Super Admin">Super Admin</option>
+                <option value="Basic Admin">Basic Admin</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-dark"id="btn_add">Add</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Add Modal -->
 <!-- Edit Modal -->
 <div class="modal fade" id="edit_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form method="POST" enctype="multipart/form-data" id="update-user-form">
+        <form action="{{route("update-user")}}" method="POST" enctype="multipart/form-data" id="update-user-form">
             @csrf
         <div class="modal-header bg bg-dark">
           <h5 class="modal-title text-light" id="exampleModalLabel">Edit User</h5>
           <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-
+            <input type="hidden" name="user_id" id="user_id">
           <div class="form-group">
             <label for="name" class="">Full Name</label>
             <input type="text" class="form-control" name="name" required id="name">
@@ -64,6 +102,32 @@
   </div>
 </div>
 <!-- Edit Modal -->
+<!-- Delete Modal -->
+<div class="modal fade" id="delete_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form action="{{route("delete-user")}}" method="POST" enctype="multipart/form-data" id="delete-user-form">
+            @csrf
+        <div class="modal-header bg bg-dark">
+          <h5 class="modal-title text-light" id="exampleModalLabel">Delete User</h5>
+          <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <input type="hidden" name="user_id" id="detele_user_id">
+            <div class="form-group">
+                <label for="name" class="">Are you sure you want to delete this user?</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-danger"id="btn_delete">Delete</button>
+        </div>
+    </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Delete Modal -->
 
   @endsection
 @section('scripts')
@@ -126,18 +190,24 @@
 
         });
 
-          //BUTTON ACTIONS
+          //EDIT BUTTON ACTIONS
      $('body').on('click', '#edit', function() {
             var user_id = $(this).data('id');
 
             $.get('user/edit/' + user_id , function(data) {
-
-                $("update-user-form").attr('action','{{route("update-user",'user_id')}}');
+                $("#user_id").val(user_id);
                 $('#name').val(data.name);
                 $('#email').val(data.email);
                 $('#edit_model').modal('show');
             })
         });
+
+         // DELETE BUTTON ACTIONS
+     $('body').on('click', '#delete', function() {
+            var user_id = $(this).data('id');
+            $("#detele_user_id").val(user_id);
+            $('#delete_model').modal('show');
+         });
 
 
     //UPDATE USER ACTION
@@ -155,11 +225,11 @@
                         $('#edit_model').modal('hide');
                         toastr.success(response.message, 'Updated');
                        $('#edit_model').modal('hide');
-                       
                         $('.data-table').DataTable().ajax.reload();
+                        window.location.reload();
                     } else {
                         $("#login_btn").val('Submit');
-                        toastr.error(response.message, 'Login Error');
+                        toastr.error(response.message, 'Error');
                     }
                 },
                 error: function(xhr) {

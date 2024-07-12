@@ -65,8 +65,12 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('/get_users', [UserController::class, 'getUsers'])->name('get_users');
 
     Route::get('/user/edit/{id}', [UserController::class, 'editUser']);
-    
-    Route::post('/user/update/{id}', [UserController::class, 'updateUser'])->name('update-user');
+
+    Route::post('/user/update', [UserController::class, 'updateUser'])->name('update-user');
+
+    Route::post('/user/delete', [UserController::class, 'deleteUser'])->name('delete-user');
+
+    Route::post('/user/add', [UserController::class, 'addUser'])->name('add-user');
      //*******************************END OF USERS ROUTES *********************************//
 });
 //*********************************** END OF BACK-END ROUTES *************************************************//

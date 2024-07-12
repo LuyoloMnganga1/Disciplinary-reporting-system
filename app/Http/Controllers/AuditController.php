@@ -110,12 +110,21 @@ class AuditController extends Controller
 
     public function destroy($id)
     {
-        $audit = DB::table('audits')->where('id',$id)->delete();
-        $notification = array(
-            'message' => 'Audit deleted',
-            'alert-type' => 'success'
-        );
-        return redirect()->back()->with($notification);
+        try{
+            $audit = DB::table('audits')->where('id',$id)->delete();
+            $notification = array(
+                'message' => 'Audit deleted',
+                'alert-type' => 'success'
+            );
+            return redirect()->back()->with($notification);
+        }catch(\Exception $e){
+
+            $notification = array(
+                'message' => 'Audit not deleted',
+                'alert-type' => 'error'
+            );
+            return redirect()->back()->with($notification);
+        }
     }
     public function auditDetails($id){
         $audit = DB::table('audits')->where('id',$id)->get();

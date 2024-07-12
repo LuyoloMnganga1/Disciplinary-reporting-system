@@ -107,5 +107,17 @@ border: 1px solid gray;
 }
 .dataTables_processing {
     background-color: #f8d7da;
-    color: #000; 
+    color: #000;
+}
+.toast-success {
+    background-color: #28a745 !important;
+}
+.toast-error {
+    background-color: #dc3545 !important;
+}
+.toast-warning {
+    background-color: #ffc107 !important;
+}
+.toast-info {
+    background-color: #17a2b8 !important;
 }
