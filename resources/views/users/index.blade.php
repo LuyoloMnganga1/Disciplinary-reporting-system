@@ -28,14 +28,13 @@
 <div class="modal fade" id="add_model" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
-        <form action="{{route("add-user")}}" method="POST" enctype="multipart/form-data" id="update-user-form">
+        <form action="{{route("add-user")}}" method="POST" enctype="multipart/form-data" id="add-user-form">
             @csrf
         <div class="modal-header bg bg-dark">
           <h5 class="modal-title text-light" id="exampleModalLabel">Add User</h5>
           <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <input type="hidden" name="user_id" id="user_id">
           <div class="form-group">
             <label for="name" class="">Full Name</label>
             <input type="text" class="form-control" name="name" required>
@@ -46,8 +45,8 @@
           </div>
           <div class="form-group">
             <label for="name" class="">Role</label>
-            <select name="role" id="role" class="form-control" required>
-                <option value="">Select role</option>
+            <select name="role" class="form-control" required>
+                <option value="" selected disabled>Select role</option>
                 <option value="Super Admin">Super Admin</option>
                 <option value="Basic Admin">Basic Admin</option>
             </select>
@@ -55,7 +54,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-dark"id="btn_add">Add</button>
+          <button type="submit" class="btn btn-success">Add</button>
         </div>
     </form>
       </div>
@@ -86,7 +85,7 @@
           <div class="form-group">
             <label for="name" class="">Role</label>
             <select name="role" id="role" class="form-control" required>
-                <option value="">Select role</option>
+                <option value="" selected disabled>Select role</option>
                 <option value="Super Admin">Super Admin</option>
                 <option value="Basic Admin">Basic Admin</option>
             </select>
@@ -129,7 +128,7 @@
 </div>
 <!-- Delete Modal -->
 
-  @endsection
+@endsection
 @section('scripts')
 <script>
     $(document).ready(function() {

@@ -7,8 +7,11 @@ use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 use Carbon\Carbon;
 use App\Models\User;
+use App\Models\UserPasswords;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -69,9 +72,9 @@ class UserController extends Controller
     public function addUser(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users'],
-            'role' => ['required'],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+            'role' => ['required', 'string', 'max:255'],
         ]);
 
         if ($validator->fails()) {
@@ -87,22 +90,94 @@ class UserController extends Controller
                 'email' => $request->email,
                 'role' => $request->role,
             ]);
+
+            $user = User::where('email',$request->email)->first();
+            $token = Str::random(20);
+            $name = $user->name;
+            $id = $user->id;
+
+            $mail = new EmailGatewayController();
+            $mail->sendEmail($user->email,'HR Focus | Disciplinary Report System - User Account Created',EmailBodyController::useraccount($name,$id, $token));
+
             $notification = array(
-                'message' => 'User added successfully',
+                'message' => 'User added successfully and an email has been sent to the user to create a password',
                 'alert-type' => 'success'
             );
             return redirect()->back()->with($notification);
         }catch(\Exception $e){
              // Log error or handle appropriately
-             \Log::error('Failed to add user: ' . $e->getMessage());
+             \Log::error('Failed to add user and send email: ' . $e->getMessage());
              $notification = array(
-                'message' => 'Failed to add user:'. $e->getMessage(),
+                'message' => 'Failed to add user and send email:'. $e->getMessage(),
                 'alert-type' => 'error'
             );
             return redirect()->back()->with($notification);
               // Failed to update
         }
     }
+    public function passwordCreate($id,$token)
+    {
+        return view('auth.password')->with(
+            [
+                'id'=> $id,
+                'token'=> $token
+            ]);
+    }
+
+    public function setPassword(Request $request)
+  {
+    $validator = Validator::make($request->all(), [
+        'password' => [
+            'required',
+            'confirmed',
+            'regex:/[a-z]/',      // must contain at least one lowercase letter
+            'regex:/[A-Z]/',      // must contain at least one uppercase letter
+            'regex:/[0-9]/',      // must contain at least one digit
+            'regex:/[@$!%*#?&]/', // must contain a special character
+            'min:8',
+        ],
+        'password_confirmation' => 'required',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Please provide a password that meets the specified requirements.',
+            'errors' => $validator->errors(),
+        ]);
+    }
+
+    try {
+        // Retrieve the user ID from the request
+        $id = $request->id;
+
+        // Update the user's password in the users table
+        User::whereId($id)->update(['password' => Hash::make($request->password)]);
+
+        // Store the new hashed password in the user_passwords table
+        UserPasswords::create([
+            'user_id' => $id,
+            'password' => Hash::make($request->password),
+            'updated_at' => Carbon::now(),
+        ]);
+
+        // Return success response
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Your password has been captured successfully!',
+            'route' => '/login'
+        ]);
+
+    } catch (\Exception $e) {
+        \Log::error('Failed to update password: ' . $e->getMessage());
+
+        // Return error response
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Failed to update password: ' . $e->getMessage(),
+        ]);
+    }
+  }
     public function editUser($id)
     {
         $user = User::find($id);

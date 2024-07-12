@@ -41,6 +41,10 @@ Route::get('/reset-password/{id}/{token}', [ResetPasswordController::class,'rest
 
 Route::post('/reset-password',  [ResetPasswordController::class,'updatePassword'])->name('reset-Password');
 
+Route::post('/create-password',  [UserController::class,'setPassword'])->name('create-password');
+
+Route::get('/set-password/{id}/{token}',  [UserController::class,'passwordCreate'])->name('set-Password');
+
 //*********************************** END OF AUTHENTICATION ROUTES *************************************//
 
 //*********************************** BACK-END ROUTES *************************************************//
