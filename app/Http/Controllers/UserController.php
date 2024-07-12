@@ -76,7 +76,7 @@ class UserController extends Controller
 
         if ($validator->fails()) {
             $notification = array(
-                'message' => 'All fields are required. Also the email must be unique from all users',
+                'message' => 'All fields are required. Also,the email must be unique from all users',
                 'alert-type' => 'error'
             );
             return redirect()->back()->with($notification);
@@ -116,6 +116,20 @@ class UserController extends Controller
     }
     public function updateUser(Request $request)
     {
+        $id = $request->user_id;
+        $validator = Validator::make($request->all(), [
+            'name' => ['required'],
+            'email' => ['required', 'email', 'unique:users,'.$id],
+            'role' => ['required'],
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'All fields are required. Also,the email must be unique from all users',
+            ]);
+        }
+
         try {
             $user = User::findOrFail($request->user_id);
             User::whereId($user->id)->update([
