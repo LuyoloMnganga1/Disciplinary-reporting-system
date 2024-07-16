@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -32,7 +33,12 @@ class UserController extends Controller
                 //**************NAME COLUMN**********//
                 ->addColumn('name', function ($row) {
 
-                    return $row->name;
+                    $name = $row->name;
+                    if (Auth::user()->email == $row->email){
+                        $name = $row->name.'&nbsp;&nbsp;&nbsp;<span class="badge bg-success">You</span>';
+                    }
+
+                    return $name;
                 })
                 //**********END NAME COLUMN*********//
 
@@ -55,15 +61,16 @@ class UserController extends Controller
                 //**************ACTION COLUMN**********//
                 ->addColumn('action', function ($row) {
                     $user = User::where('email',$row->email)->first();
+                    $disabled = (Auth::user()->email == $row->email) ? 'disabled' : '';
                     $action = '<div class="btn-group">
                     <button type="button" class="btn btn-warning text-light" data-id="'.$user->id.'" data-bs-toggle="modal" id="edit"><i class="fa fa-pencil"></i></button>
-                    <button type="button" class="btn btn-danger" data-id="'.$user->id.'" data-bs-toggle="modal"  id="delete"><i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-danger" data-id="'.$user->id.'" data-bs-toggle="modal"  id="delete" '.$disabled.'><i class="fa fa-trash"></i></button>
                     </div>';
                     return $action;
                 })
                 //**********END ACTION COLUMN*********//
 
-                ->rawColumns(['created_at', 'event', 'user_id', 'action'])
+                ->rawColumns(['name', 'email', 'role', 'action'])
                 ->make(true);
             return view('users')->with('data', $data);
         }
